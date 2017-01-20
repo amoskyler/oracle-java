@@ -11,6 +11,7 @@
     creates: "{{ oracle_java_dir_source }}/{{ oracle_java_rpm_filename }}"
   register: oracle_java_task_rpm_download
   become: yes
+  method: su
   tags:
     - installation
 
@@ -18,6 +19,7 @@
   action: "{{ ansible_pkg_mgr }} name={{ oracle_java_dir_source }}/{{ oracle_java_rpm_filename }} state=present"
   when: not oracle_java_task_rpm_download|skipped
   become: yes
+  method: su
   tags:
     - installation
 
@@ -32,6 +34,7 @@
     - { path: "{{ oracle_java_home }}/bin", exe: 'javac' }
     - { path: "{{ oracle_java_home }}/bin", exe: 'javadoc' }
   become: yes
+  method: su
   when: (
           oracle_java_set_as_default and
           oracle_java_task_rpm_download is defined and
